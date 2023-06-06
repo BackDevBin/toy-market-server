@@ -61,12 +61,35 @@ async function run() {
         res.send(result);
       })
 
-      // app.delete('/toys/:id',async(req, res) =>{
-      //   const id = req.params.id;
-      //   const query = {_id : new ObjectId(id)};
-      //   const deleteItem = await toyData.deleteOne(query);
-      //   res.send(deleteItem);
-      // })
+      app.delete('/toys/:id',async(req, res) =>{
+        const id = req.params.id;
+        const query = {_id : new ObjectId(id)};
+        const deleteItem = await toyData.deleteOne(query);
+        res.send(deleteItem);
+      })
+
+
+
+      
+      app.put('/toys/:id', async(req, res) =>{
+        const id = req.params.id;
+        const updateToy = req.body;
+        const query = {_id : new ObjectId(id)};
+        const options = { upsert: true };
+  
+        const setUpdateToy = {
+          $set : {
+            price : updateToy.price,
+            available_quantity: updateToy.available_quantity,
+            detail_description: updateToy.detail_description
+          }
+        }
+        const result = await toyData.updateOne(query,setUpdateToy,options);
+        res.send(result);
+      })
+  
+
+      
   
   
   
