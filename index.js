@@ -33,6 +33,7 @@ async function run() {
     const imageGallery = client.db("toyMarket").collection("images");
     const toyData = client.db("toyMarket").collection("toyData");
 
+    // get image 
 
     app.get('/images', async(req, res) =>{
         const cursor = imageGallery.find();
@@ -40,11 +41,15 @@ async function run() {
         res.send(result);
       })
 
+      // get all toy
+
       app.get('/toys', async(req, res) =>{
         const cursor = toyData.find();
         const result = await cursor.toArray();
         res.send(result);
       })
+
+      // get toy by id
 
       app.get('/toys/:id', async(req, res) =>{
         const id = req.params.id;
@@ -53,6 +58,7 @@ async function run() {
         res.send(result);
       })
 
+      // Add a Toy
 
       app.post('/toys', async(req, res) =>{
         const toy = req.body;
@@ -61,6 +67,8 @@ async function run() {
         res.send(result);
       })
 
+      // Delete toy 
+
       app.delete('/toys/:id',async(req, res) =>{
         const id = req.params.id;
         const query = {_id : new ObjectId(id)};
@@ -68,8 +76,7 @@ async function run() {
         res.send(deleteItem);
       })
 
-
-
+      // Updated toy 
 
       app.put('/toys/:id', async(req, res) =>{
         const id = req.params.id;
@@ -102,27 +109,21 @@ async function run() {
       // Get sorted data
 
       app.get('/ascending', async(req, res) =>{
-
-        
         const cursor = toyData.find().sort({ "price": 1 });
         const result = await cursor.toArray();
         res.send(result);
       })
 
       app.get('/descending', async(req, res) =>{
-
-        
         const cursor = toyData.find().sort({ "price": -1 });
         const result = await cursor.toArray();
         res.send(result);
       })
   
 
-      
-  
 
     // await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+    // console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
